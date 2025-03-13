@@ -7,21 +7,21 @@ XEMU_DATE=$(date -u)
 XEMU_COMMIT=$( \
   cd "$dir"; \
   if test -e .git; then \
-    git rev-parse HEAD 2>/dev/null | tr -d '\n'; \
+    head -n 1 .git/refs/heads/$(cat .git/HEAD | sed 's|ref: refs/heads/||') 2>/dev/null | tr -d '\n'
   elif test -e XEMU_COMMIT; then \
     cat XEMU_COMMIT; \
   fi)
 XEMU_BRANCH=$( \
   cd "$dir"; \
   if test -e .git; then \
-    git symbolic-ref --short HEAD || echo $XEMU_COMMIT; \
+    cat .git/HEAD | sed 's|ref: refs/heads/||' 2>/dev/null || echo "$XEMU_COMMIT"
   elif test -e XEMU_BRANCH; then \
     cat XEMU_BRANCH; \
   fi)
 XEMU_VERSION=$( \
   cd "$dir"; \
   if test -e .git; then \
-    git describe --tags --match 'v*' | cut -c 2- | tr -d '\n'; \
+    ls .git/refs/tags | grep '^v' | sort -V | tail -n 1 | cut -c 2- | tr -d '\n'
   elif test -e XEMU_VERSION; then \
     cat XEMU_VERSION; \
   fi)
