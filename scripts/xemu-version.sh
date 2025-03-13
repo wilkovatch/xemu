@@ -10,6 +10,8 @@ XEMU_COMMIT=$( \
     head -n 1 .git/refs/heads/$(cat .git/HEAD | sed 's|ref: refs/heads/||') 2>/dev/null | tr -d '\n'
   elif test -e XEMU_COMMIT; then \
     cat XEMU_COMMIT; \
+  else \
+    echo "unknown"
   fi)
 XEMU_BRANCH=$( \
   cd "$dir"; \
@@ -17,6 +19,8 @@ XEMU_BRANCH=$( \
     cat .git/HEAD | sed 's|ref: refs/heads/||' 2>/dev/null || echo "$XEMU_COMMIT"
   elif test -e XEMU_BRANCH; then \
     cat XEMU_BRANCH; \
+  else \
+    echo "unknown"
   fi)
 XEMU_VERSION=$( \
   cd "$dir"; \
@@ -24,6 +28,8 @@ XEMU_VERSION=$( \
     ls .git/refs/tags | grep '^v' | sort -V | tail -n 1 | cut -c 2- | tr -d '\n'
   elif test -e XEMU_VERSION; then \
     cat XEMU_VERSION; \
+  else \
+    echo "0.0.0"
   fi)
 
 get_version_field() {
