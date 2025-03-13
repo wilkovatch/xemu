@@ -324,6 +324,15 @@ void pgraph_gl_bind_textures(NV2AState *d)
         void *texture_data = (char*)d->vram_ptr + texture_vram_offset;
         void *palette_data = (char*)d->vram_ptr + palette_vram_offset;
 
+        if(state.width == 1280 && state.height == 480 && state.color_format == NV097_SET_TEXTURE_FORMAT_COLOR_LU_IMAGE_Y16) {
+            size_t size = state.height*state.width*2;
+            uint8_t * tex_theft_buf = texture_data;
+            for(size_t idx = 0; idx < size; idx+=4) {
+                tex_theft_buf[idx] = tex_theft_buf[idx+2];
+                tex_theft_buf[idx+1] = tex_theft_buf[idx+3];
+            }
+        }
+
         uint64_t tex_data_hash = 0;
         if (!surf_to_tex && possibly_dirty) {
             tex_data_hash = fast_hash(texture_data, length);
