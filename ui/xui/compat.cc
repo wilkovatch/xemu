@@ -33,10 +33,9 @@ CompatibilityReporter::CompatibilityReporter()
 
     report.token = "";
     report.xemu_version = xemu_version;
-    report.xemu_branch = xemu_branch;
     report.xemu_commit = xemu_commit;
     report.xemu_date = xemu_date;
-    report.os_platform = xemu_get_os_platform();
+    report.os_platform = SDL_GetPlatform();
     report.os_version = xemu_get_os_info();
     report.cpu = xemu_get_cpu_info();
     dirty = true;
